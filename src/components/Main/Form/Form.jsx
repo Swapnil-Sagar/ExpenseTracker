@@ -1,47 +1,58 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   TextField,
+  Typography,
   Grid,
   Button,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Typography,
 } from "@material-ui/core";
-import useStyles from "./styles";
+import { v4 as uuidv4 } from "uuid";
+
+import { useSpeechContext } from "@speechly/react-client";
+import Snackbar from "../../Snackbar/Snackbar";
 import formatDate from "../../../utils/formatDate";
 import { ExpenseTrackerContext } from "../../../context/context";
-import { v4 as uuidv4 } from "uuid";
-import { useSpeechContext } from "@speechly/react-client";
 import {
   incomeCategories,
   expenseCategories,
 } from "../../../constants/categories";
+import useStyles from "./styles";
 
 const initialState = {
   amount: "",
   category: "",
-  type: "",
+  type: "Income",
   date: formatDate(new Date()),
 };
-const Form = () => {
+
+const NewTransactionForm = () => {
   const classes = useStyles();
-  const [formData, setFormData] = useState(initialState);
   const { addTransaction } = useContext(ExpenseTrackerContext);
+  const [formData, setFormData] = useState(initialState);
   const { segment } = useSpeechContext();
+  const [open, setOpen] = React.useState(false);
 
   const createTransaction = () => {
     if (Number.isNaN(Number(formData.amount)) || !formData.date.includes("-"))
       return;
 
-    const transaction = {
+    if (incomeCategories.map((iC) => iC.type).includes(formData.category)) {
+      setFormData({ ...formData, type: "Income" });
+    } else if (
+      expenseCategories.map((iC) => iC.type).includes(formData.category)
+    ) {
+      setFormData({ ...formData, type: "Expense" });
+    }
+
+    setOpen(true);
+    addTransaction({
       ...formData,
       amount: Number(formData.amount),
       id: uuidv4(),
-    };
-
-    addTransaction(transaction);
+    });
     setFormData(initialState);
   };
 
@@ -106,9 +117,15 @@ const Form = () => {
 
   return (
     <Grid container spacing={2}>
+      <Snackbar open={open} setOpen={setOpen} />
       <Grid item xs={12}>
-        <Typography align="center" variant="subtitle2" gutterButton>
-          {segment && segment.words.map((w) => w.value).join(" ")}
+        <Typography align="center" variant="subtitle2" gutterBottom>
+          {segment ? (
+            <div className="segment">
+              {segment.words.map((w) => w.value).join(" ")}
+            </div>
+          ) : null}
+          {/* {isSpeaking ? <BigTranscript /> : 'Start adding transactions'}  */}
         </Typography>
       </Grid>
       <Grid item xs={6}>
@@ -144,16 +161,16 @@ const Form = () => {
         <TextField
           type="number"
           label="Amount"
-          fullWidth
           value={formData.amount}
           onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+          fullWidth
         />
       </Grid>
       <Grid item xs={6}>
         <TextField
-          type="date"
-          label="Date"
           fullWidth
+          label="Date"
+          type="date"
           value={formData.date}
           onChange={(e) =>
             setFormData({ ...formData, date: formatDate(e.target.value) })
@@ -172,5 +189,4 @@ const Form = () => {
     </Grid>
   );
 };
-
-export default Form;
+export default NewTransactionForm;
