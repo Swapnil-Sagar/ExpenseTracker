@@ -1,7 +1,5 @@
 // Reduer => a function that takes the old state and action and returns a new state
 
-import { StarRateOutlined } from "@material-ui/icons";
-
 const contextReducer = (state, action) => {
   let transactions;
 
