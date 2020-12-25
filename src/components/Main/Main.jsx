@@ -20,10 +20,10 @@ const Main = () => {
   return (
     <div>
       <Card className={classes.root}>
-        <CardHeader title="Expense Tracker" subheader="By Sagar" />
+        <CardHeader title="Expensely" subheader="By Sagar" />
         <CardContent>
           <Typography align="center" variant="h5">
-            Total Balance {balance}₹
+            Total Balance ₹{balance}
           </Typography>
           <Typography
             variant="subtitle1"
