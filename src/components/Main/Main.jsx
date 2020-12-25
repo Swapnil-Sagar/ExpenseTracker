@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Card,
   CardHeader,
@@ -9,24 +9,26 @@ import {
 } from "@material-ui/core";
 
 import useStyles from "./styles";
+import { ExpenseTrackerContext } from "../../context/context";
 import Form from "./Form/Form";
 import List from "./List/List";
 
 const Main = () => {
   const classes = useStyles();
+  const { balance } = useContext(ExpenseTrackerContext);
   return (
     <div>
       <Card className={classes.root}>
         <CardHeader title="Expense Tracker" subheader="By Sagar" />
         <CardContent>
           <Typography align="center" variant="h5">
-            Total Balance $100
+            Total Balance {balance}₹
           </Typography>
           <Typography
             variant="subtitle1"
             styles={{ lineHeight: "1.5em", marginTop: "20px" }}
           >
-            Try saying: add income for 100$ in category salary for monday
+            Try saying: add income for 100₹ in category salary for monday
           </Typography>
           <Divider />
           <Form />
