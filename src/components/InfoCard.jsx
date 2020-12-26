@@ -7,7 +7,7 @@ const InfoCard = () => {
     <div style={{ textAlign: "center", padding: "0 10%" }}>
       Try saying: <br />
       Add {isIncome ? "Income " : "Expense "}
-      for {isIncome ? "₹100 Rupees " : "50 Rupees "}
+      for {isIncome ? "100 Rupees " : "50 Rupees "}
       in Category {isIncome ? "Salary " : "Food "}
       for {isIncome ? "Monday..." : "Friday..."}
     </div>
