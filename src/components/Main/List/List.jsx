@@ -9,7 +9,7 @@ import {
   IconButton,
   Slide,
 } from "@material-ui/core";
-import { Delete, MoneyOff } from "@material-ui/icons";
+import { Delete, AttachMoney } from "@material-ui/icons";
 
 import { ExpenseTrackerContext } from "../../../context/context";
 import useStyles from "./styles";
@@ -37,7 +37,7 @@ const List = () => {
                     : classes.avatarExpense
                 }
               >
-                <MoneyOff />
+                <AttachMoney />
               </Avatar>
             </ListItemAvatar>
             <ListItemText
